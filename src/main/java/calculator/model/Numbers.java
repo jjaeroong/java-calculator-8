@@ -1,5 +1,7 @@
 package calculator.model;
 
+import java.util.Arrays;
+
 /**
  * 파싱된 숫자 배열 검증 및 합계 수행
  */
@@ -14,25 +16,24 @@ public class Numbers {
     }
 
     /**
-     * 숫자가 양수인지 검증
+     * 모든 숫자가 양수인지 검증
      */
     private void validatePositiveNumbers(final double[] numbers) {
-        for (final double number : numbers) {
-            validateNegativeNumbers(number);
-        }
+        Arrays.stream(numbers)
+                .forEach(this::validateNegativeNumber);
     }
-    private void validateNegativeNumbers(final double numbers) {
+    /**
+     * 개별 숫자가 음수인지 검증
+     */
+    private void validateNegativeNumber(final double numbers) {
         if (numbers < 0) {
             throw new IllegalArgumentException(NEGATIVE_NUMBER_ERROR_MESSAGE);
         }
     }
 
     public double sum() {
-        double total = 0.0;
-        for (final double value : values) {
-            total += value;
-        }
-        return total;
+        return Arrays.stream(values)
+                .sum();
     }
 
 }
