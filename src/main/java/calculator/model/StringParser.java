@@ -76,26 +76,46 @@ public class StringParser {
         throw new IllegalArgumentException(INVALID_CUSTOM_DELIMITER_ERROR);
     }
     /**
-     * 문자열 배열을 double 배열 변환
-     * 숫자가 아닌 값이 포함되어 있으면 예외 발생
+     * 문자열 배열을 double 배열로 변환
+     * 각 요소는 공백 제거 후 검증 및 변환
      */
-    private double[] convertToDoubleArray(String[] arr) {
+    private double[] convertToDoubleArray(final String[] arr) {
         double[] result = new double[arr.length];
-
         for (int i = 0; i < arr.length; i++) {
-            String s = arr[i].trim();
-
-            if (s.isEmpty()) {
-                throw new IllegalArgumentException(NO_NUMBERS_ERROR);
-            }
-
-            try {
-                result[i] = Double.parseDouble(s);
-            } catch (NumberFormatException e) {
-                throw new IllegalArgumentException(INVALID_NUMBER_FORMAT_ERROR);
-            }
+            result[i] = parseToDouble(arr[i]);
         }
         return result;
     }
+
+    /**
+     * 개별 문자열을 double로 변환
+     * 빈 문자열 또는 숫자 형식 오류 시 예외 발생.
+     */
+    private double parseToDouble(final String s) {
+        final String trimmed = s.trim();
+        validateNotEmpty(trimmed);
+        return parseDoubleValue(trimmed);
+    }
+
+    /**
+     * 문자열이 비어있는지 검증
+     */
+    private void validateNotEmpty(final String s) {
+        if (s.isEmpty()) {
+            throw new IllegalArgumentException(NO_NUMBERS_ERROR);
+        }
+    }
+
+    /**
+     * 문자열을 double로 변환한다.
+     */
+    private double parseDoubleValue(final String s) {
+        try {
+            return Double.parseDouble(s);
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException(INVALID_NUMBER_FORMAT_ERROR);
+        }
+    }
+
 
 }
