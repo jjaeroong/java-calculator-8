@@ -16,14 +16,8 @@ public class CalculatorController {
     }
 
     public void run() {
-        try {
-            final String input = inputView.readInput();
-            final double result = calculatorService.calculate(input);
-            outputView.printResult(result);
-        } catch (IllegalArgumentException e) {
-            System.out.println(e.getMessage());
-        } catch (Exception e) {
-            System.out.println("예기치 못한 오류가 발생했습니다.");
-        }
+        final String input = inputView.readInput();
+        final double result = calculatorService.calculate(input);
+        outputView.printResult(result);
     }
 }
