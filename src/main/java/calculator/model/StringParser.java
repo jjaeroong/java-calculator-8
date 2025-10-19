@@ -33,13 +33,13 @@ public class StringParser {
 
         return parseWithDefaultDelimiter(trimmedInput);
     }
+
     /**
      * 문자열이 null이거나 비어있는지 확인
      */
     private boolean isNullOrEmpty(final String input) {
         return input == null || input.isEmpty();
     }
-
 
     /**
      * 기본 구분자만 사용하는 입력 문자열을 처리 ex) "1,2:3" → [1, 2, 3]
@@ -56,6 +56,7 @@ public class StringParser {
         final Pattern pattern = Pattern.compile(CUSTOM_DELIMITER);
         return pattern.matcher(input).find();
     }
+
     /**
      * 커스텀 구분자로 구분된 숫자 문자열 처리
      */
@@ -67,7 +68,6 @@ public class StringParser {
             final String customDelimiter = matcher.group(1);
             final String numbers = matcher.group(2);
 
-
             // 커스텀 구분자 + 기본 구분자 모두 사용 가능 처리
             final String combinedDelimiter = Pattern.quote(customDelimiter) + "|" + DEFAULT_DELIMITER;
             return convertToDoubleArray(numbers.split(combinedDelimiter));
@@ -75,47 +75,46 @@ public class StringParser {
 
         throw new IllegalArgumentException(INVALID_CUSTOM_DELIMITER_ERROR);
     }
+
     /**
      * 문자열 배열을 double 배열로 변환
      * 각 요소는 공백 제거 후 검증 및 변환
      */
-    private double[] convertToDoubleArray(final String[] arr) {
-        double[] result = new double[arr.length];
-        for (int i = 0; i < arr.length; i++) {
-            result[i] = parseToDouble(arr[i]);
+    private double[] convertToDoubleArray(final String[] parts) {
+        double[] result = new double[parts.length];
+        for (int i = 0; i < parts.length; i++) {
+            result[i] = parseToDouble(parts[i]);
         }
         return result;
     }
 
     /**
      * 개별 문자열을 double로 변환
-     * 빈 문자열 또는 숫자 형식 오류 시 예외 발생.
+     * 빈 문자열 또는 숫자 형식 오류 시 예외 발생
      */
-    private double parseToDouble(final String s) {
-        final String trimmed = s.trim();
-        validateNotEmpty(trimmed);
-        return parseDoubleValue(trimmed);
+    private double parseToDouble(final String value) {
+        final String trimmedValue = value.trim();
+        validateNotEmpty(trimmedValue);
+        return parseDoubleValue(trimmedValue);
     }
 
     /**
      * 문자열이 비어있는지 검증
      */
-    private void validateNotEmpty(final String s) {
-        if (s.isEmpty()) {
+    private void validateNotEmpty(final String value) {
+        if (value.isEmpty()) {
             throw new IllegalArgumentException(NO_NUMBERS_ERROR);
         }
     }
 
     /**
-     * 문자열을 double로 변환한다.
+     * 문자열을 double로 변환
      */
-    private double parseDoubleValue(final String s) {
+    private double parseDoubleValue(final String value) {
         try {
-            return Double.parseDouble(s);
+            return Double.parseDouble(value);
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException(INVALID_NUMBER_FORMAT_ERROR);
         }
     }
-
-
 }
