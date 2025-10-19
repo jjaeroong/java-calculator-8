@@ -18,9 +18,12 @@ public class Numbers {
      */
     private void validatePositiveNumbers(final double[] numbers) {
         for (final double number : numbers) {
-            if (number < 0) {
-                throw new IllegalArgumentException(NEGATIVE_NUMBER_ERROR_MESSAGE);
-            }
+            validateNegativeNumbers(number);
+        }
+    }
+    private void validateNegativeNumbers(final double numbers) {
+        if (numbers < 0) {
+            throw new IllegalArgumentException(NEGATIVE_NUMBER_ERROR_MESSAGE);
         }
     }
 
